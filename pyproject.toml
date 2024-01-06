@@ -1,0 +1,31 @@
+[project]
+name = "redditbot"
+version = "0.1.0"
+description = ""
+authors = [
+    { name = "pawrequest", email = "paw@pawrequest.com" }
+]
+dependencies = [
+    'asyncpraw',
+    'python-dotenv',
+    'sqlmodel',
+    'loguru'
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pytest-asyncio",
+    "httpx",
+    "pytest",
+    "coverage>=7.3.2",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
