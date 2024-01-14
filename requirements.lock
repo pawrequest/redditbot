@@ -23,6 +23,7 @@ greenlet==3.0.3
 idna==3.6
 loguru==0.7.2
 multidict==6.0.4
+pawsupport @ file:///C:/Users/RYZEN/prdev/pawsupport
 pydantic==2.5.3
 pydantic-core==2.14.6
 python-dotenv==1.0.0

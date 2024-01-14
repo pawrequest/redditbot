@@ -1,3 +1,6 @@
-from redditbot.reddit_thread_model import RedditThread, RedditThreadBase, RedditThreadRead
-from redditbot.poster import Poster
+from .reddit_thread_model import RedditThreadBase
+
+# from redditbot.poster import Poster
 from redditbot.monitor import SubredditMonitor
+
+from .managers import subreddit_cm, reddit_cm

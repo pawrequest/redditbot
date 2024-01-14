@@ -18,14 +18,6 @@ class Writer(Protocol):
         ...
 
 
-def param_or_env(key: str, value: str | None) -> str:
-    if value is None:
-        value = os.environ.get(key, None)
-        if value is None:
-            raise EnvironmentError(f"{key} was neither provided nor in .env")
-        return value
-
-
 class Poster:
     def __init__(
         self,
@@ -36,8 +28,8 @@ class Poster:
         wiki_writer: Writer,
         wiki: WikiPage,
     ):
-        self.session = session
-        self.aio_session = aio_session
+        # self.session = session
+        # self.aio_session = aio_session
         self.subreddit_ = subreddit
         self.wiki = wiki
         self.post_writer = post_writer

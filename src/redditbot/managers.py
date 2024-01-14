@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 from asyncpraw.reddit import Reddit, Subreddit
 
-from redditbot.monitor import param_or_env
+from pawsupport import param_or_env
 
 if TYPE_CHECKING:
     pass

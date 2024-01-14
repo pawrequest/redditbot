@@ -55,9 +55,9 @@ class SubredditMonitor:
                 try:
                     await flair_submission(submission, flair_names)
                 except Exception as e:
-                    logger.error(f"Error applying flair: {e}", bot_name="Monitor")
+                    logger.error(f"Error applying flair: {e}")
             else:
-                logger.warning("DO FLAIR DISABLED - NOT APPLYING FLAIR", bot_name="Monitor")
+                logger.warning("DO FLAIR DISABLED - NOT APPLYING FLAIR")
 
     async def submissiongurus_to_threads(
         self,
@@ -129,12 +129,12 @@ async def flair_submission(submission: Submission, flairs: list, custom_flair_id
             try:
                 # whats this pycharm error?? Fixture 'submission.flair.select' is not requested by test functions or @pytest.mark.usefixtures marker
                 await submission.flair.select(param_or_env("CUSTOM_FLAIR_ID", custom_flair_id), text=flair)
-                logger.warning(f"Flaired {submission.title} with {flair}", bot_name="Monitor")
+                logger.warning(f"Flaired {submission.title} with {flair}")
             except Exception as e:
-                logger.error(f"Error applying flair: to {submission.title} {e}", bot_name="Monitor")
+                logger.error(f"Error applying flair: to {submission.title} {e}")
         return True
     except Exception as e:
-        logger.error(f"Error applying flair: {e}", bot_name="Monitor")
+        logger.error(f"Error applying flair: {e}")
         return False
 
 
@@ -144,7 +144,7 @@ async def submission_to_thread(submission: Submission) -> RedditThread:
         thread_ = RedditThread.from_submission(submission)
         return RedditThread.model_validate(thread_)
     except Exception as e:
-        logger.error(f"Error Turning Submission into RedditThread {e}", bot_name="Monitor")
+        logger.error(f"Error Turning Submission into RedditThread {e}")
 
 
 async def _edit_reddit_wiki(markup: str, wiki: WikiPage):

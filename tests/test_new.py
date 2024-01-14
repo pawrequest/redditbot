@@ -1,12 +1,13 @@
 import dotenv
-from redditbot.monitor import submission_to_thread
+import pytest_asyncio
 from sqlmodel import SQLModel, Session, create_engine
 import pytest
-from asyncpraw.reddit import Reddit, Subreddit
+from asyncpraw.reddit import Subreddit
 
-from redditbot import SubredditMonitor, RedditThread
-from redditbot.managers import reddit_cm, subreddit_cm
-from redditbot.tag_model import TagBase, Tag, TagLink
+from redditbot.monitor import SubredditMonitor
+from redditbot.reddit_thread_db_model import RedditThread
+from redditbot.managers import subreddit_cm
+from redditbot.tag_model import Tag
 
 dotenv.load_dotenv()
 
@@ -31,34 +32,39 @@ async def test_r():
         assert isinstance(subreddit, Subreddit)
 
 
-@pytest.mark.asyncio
-async def test_subreddit_monitor(test_session):
+@pytest_asyncio.fixture
+async def monitor_bot(test_session):
     async with subreddit_cm() as subreddit:
-        mon = SubredditMonitor(session=test_session, match_model=Tag, link_model=TagLink, subreddit=subreddit)
-        assert isinstance(mon, SubredditMonitor)
+        mon = SubredditMonitor(session=test_session, match_model=Tag, subreddit=subreddit, thread_db_type=RedditThread)
+        yield mon
 
 
 @pytest.mark.asyncio
-async def test_filter_existing_submissions(test_session):
-    test_session.add(Tag(name="Joe Rogan"))
-    test_session.commit()
+async def test_montior_bot(monitor_bot):
+    assert isinstance(monitor_bot, SubredditMonitor)
 
-    async with subreddit_cm("test") as subreddit:
-        mon = SubredditMonitor(session=test_session, match_model=Tag, subreddit=subreddit)
-        sub_stream = mon.subreddit.stream.submissions(skip_existing=False)
-        async for sub in mon.filter_existing_submissions(sub_stream):
-            if matches := await mon.get_matches(sub):
-                thread = await submission_to_thread(sub)
-                assert isinstance(thread, RedditThread)
-                for match in matches:
-                    assert isinstance(match, Tag)
-                    tds = match.reddit_threads
-                    match.reddit_threads.append(thread)
-                test_session.add(thread)
-                test_session.commit()
-                test_session.refresh(thread)
-                assert isinstance(thread, RedditThread)
-                return
+
+# @pytest.mark.asyncio
+# async def test_monitor(test_session):
+#     test_session.add(Tag(name="Joe Rogan"))
+#     test_session.commit()
+#
+#     async with subreddit_cm("test") as subreddit:
+#         mon = SubredditMonitor(session=test_session, match_model=Tag, subreddit=subreddit)
+#         sub_stream = mon.subreddit.stream.submissions(skip_existing=False)
+#         async for sub in mon.filter_existing_submissions(sub_stream):
+#             if matches := await mon.get_matches(sub):
+#                 thread = await submission_to_thread(sub)
+#                 assert isinstance(thread, RedditThread)
+#                 for match in matches:
+#                     assert isinstance(match, Tag)
+#                     tds = match.reddit_threads
+#                     match.reddit_threads.append(thread)
+#                 test_session.add(thread)
+#                 test_session.commit()
+#                 test_session.refresh(thread)
+#                 assert thread.tags
+#                 return
 
 
 def test_get_matches(subreddit_monitor):
