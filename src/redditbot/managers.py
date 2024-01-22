@@ -5,8 +5,7 @@ from contextlib import asynccontextmanager
 from typing import TYPE_CHECKING
 
 from asyncpraw.reddit import Reddit, Subreddit
-
-from pawsupport import param_or_env
+from pawsupport.misc_ps import param_or_env
 
 if TYPE_CHECKING:
     pass
@@ -36,15 +35,3 @@ async def subreddit_cm(sub_name: str = None) -> Subreddit:
             yield subreddit
         finally:
             await reddit.close()
-
-
-# @asynccontextmanager
-# async def wiki_page_cm(subreddit: Subreddit, page_name: str):
-#     try:
-#         wiki_page = await subreddit.wiki.get_page(page_name)
-#         yield wiki_page
-#     except Exception as e:
-#         logger.error(f"error in wiki_page_cm: {e}")
-#         raise e
-#     finally:
-#         ...

@@ -1,21 +1,19 @@
-# no dont do this!! from __future__ import annotations
 from datetime import datetime
-from typing import TYPE_CHECKING, Dict
+from typing import Optional, List, Dict
+from pawsupport.misc_ps import obj_to_dict
 
 from asyncpraw.models import Submission
-from pydantic import field_validator
-from sqlalchemy import Column
-from sqlmodel import Field, JSON, SQLModel
 
-if TYPE_CHECKING:
-    ...
-
-
-def submission_to_dict(submission: Submission):
-    serializable_types = (int, float, str, bool, type(None))
-    if isinstance(submission, Submission):
-        submission = vars(submission)
-    return {k: v for k, v in submission.items() if isinstance(v, serializable_types)}
+try:
+    from pydantic import field_validator
+    from sqlalchemy import Column, JSON
+    from sqlmodel import Field, Relationship, SQLModel
+except ImportError as e:
+    if "partially initialized module" not in str(e):
+        e = f"sqlmodel optional dependency is not installed - {e}"
+    raise ImportError(e)
+from redditbot.red_sql.tag import Tag
+from redditbot.red_sql.link import TagLink
 
 
 class RedditThreadBase(SQLModel):
@@ -31,7 +29,7 @@ class RedditThreadBase(SQLModel):
 
     @field_validator("submission", mode="before")
     def validate_submission(cls, v):
-        return submission_to_dict(v)
+        return obj_to_dict(v)
 
     @classmethod
     def from_submission(cls, submission: Submission):
@@ -44,6 +42,7 @@ class RedditThreadBase(SQLModel):
         )
         return cls.model_validate(tdict)
 
-    @property
-    def slug(self):
-        return f"/red/{self.id}"
+
+class RedditThread(RedditThreadBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    tags: List["Tag"] = Relationship(back_populates="reddit_threads", link_model=TagLink)

@@ -1,6 +1,4 @@
-from .reddit_thread_model import RedditThreadBase
+from asyncpraw.models import Submission
 
-# from redditbot.poster import Poster
-from redditbot.monitor import SubredditMonitor
-
-from .managers import subreddit_cm, reddit_cm
+from .poster import Poster
+from .managers import reddit_cm, subreddit_cm
