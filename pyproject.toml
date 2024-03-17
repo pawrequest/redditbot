@@ -10,7 +10,7 @@ dependencies = [
     'python-dotenv',
     'sqlmodel',
     'loguru',
-    "pawsupport @ file:///C:/Users/RYZEN/prdev/pawsupport",
+    "suppawt",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"

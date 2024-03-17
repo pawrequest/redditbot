@@ -8,7 +8,7 @@ from typing import AsyncGenerator, Type, TypeVar
 
 from asyncpraw.models import Submission, Subreddit
 from loguru import logger
-from pawsupport.sqlmodel_ps.sqlm import obj_in_session
+from pawdantic.pawsql import sqlpr
 
 from sqlmodel import SQLModel, Session, select
 

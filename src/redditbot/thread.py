@@ -1,9 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict
 
 from asyncpraw.models import Submission
-from pawsupport.misc_ps import obj_to_dict
 
 @dataclass
 class RedditThreadDC:
@@ -13,9 +11,9 @@ class RedditThreadDC:
     created_datetime: datetime
     submission: Submission
 
-    def __post_init__(self):
-        if isinstance(self.submission, Submission):
-            self.submission = obj_to_dict(self.submission)
+    # def __post_init__(self):
+    #     if isinstance(self.submission, Submission):
+    #         self.submission = obj_to_dict(self.submission)
 #
 # @dataclass
 # class RedditThreadDC:

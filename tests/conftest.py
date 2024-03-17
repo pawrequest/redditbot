@@ -1,6 +1,6 @@
 import dotenv
 import pytest_asyncio
-from pawsupport import session_fxt
+from suppawt import session_fxt
 
 from redditbot import SubredditMonitorSQL, subreddit_cm
 from redditbot.monitor import SubredditMonitor

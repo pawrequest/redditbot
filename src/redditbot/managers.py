@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from typing import TYPE_CHECKING
 
 from asyncpraw.reddit import Reddit, Subreddit
-from pawsupport.misc_ps import param_or_env
+from suppawt.misc import param_or_env
 
 if TYPE_CHECKING:
     pass

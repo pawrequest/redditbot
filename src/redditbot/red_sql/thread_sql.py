@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional, List, Dict
-from pawsupport.misc_ps import obj_to_dict
+from suppawt.misc_ps import obj_to_dict
 
 from asyncpraw.models import Submission
 

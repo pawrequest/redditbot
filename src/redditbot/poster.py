@@ -3,8 +3,15 @@ from __future__ import annotations
 from asyncpraw.models import Subreddit, WikiPage
 from asyncpraw.reddit import Submission
 from loguru import logger
-from pawsupport.types_ps import Writer
+import typing as _t
 
+
+class Writer(_t.Protocol):
+    def write_many(self, content: _t.Sequence = None) -> str:
+        ...
+
+    def write_one(self, content=None) -> str:
+        ...
 
 class Poster:
     def __init__(
